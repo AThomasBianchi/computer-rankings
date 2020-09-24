@@ -1,9 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-
-// const URL = 'https://fantasy.espn.com/baseball/league/schedule?leagueId=12577';
-const URL = 'https://fantasy.espn.com/football/league/schedule?leagueId=59910';
-
+const URL = 'https://fantasy.espn.com/football/league/schedule?leagueId=59910&teamId=10';
 
 (async () => {
   try {
@@ -12,23 +9,26 @@ const URL = 'https://fantasy.espn.com/football/league/schedule?leagueId=59910';
     await page.goto(URL, { waitUntil: 'networkidle0' });
 
     let results = await page.evaluate(() => {
-      // let teams = document.querySelectorAll('.teamName');
-      // let scores = document.querySelectorAll('.matchup--table .result-column:not(.header)');
-      // let results = {}
+      
+      let scores = document.querySelectorAll('.Table__TBODY .result-column');
+      let results = []
 
-      // for (let i = 0; i < teams.length; i++) {
-      //   let matchup = Math.ceil((i + 1) / 18);
-      //   if (!results[matchup]) results[matchup] = {};
-      //   results[matchup][teams[i].innerHTML] = parseFloat(scores[i].innerText);
-      // }
+      for (let i = 0; i < scores.length; i++) {
+        results.push(i);
+        // results.push(scores[i].innerHTML.trim());
+        // let matchup = Math.ceil((i + 1) / 18);
+        // if (!results[matchup]) results[matchup] = {};
+        // results[matchup][teams[i].innerHTML] = parseFloat(scores[i].innerText);
+      }
       return results;
     });
 
+    console.log(results);
     await browser.close();
-    fs.writeFile('results.json', JSON.stringify(results), function (err) {
-      if (err) throw err;
-      console.log('Results saved');
-    })
+    // // fs.writeFile('results.json', JSON.stringify(results), function (err) {
+    //   if (err) throw err;
+    //   console.log('Results saved');
+    // })
   } catch (err) {
     console.log(error(err));
     await browser.close();

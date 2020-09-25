@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const URL = 'https://fantasy.espn.com/football/league/schedule?leagueId=59910&teamId=10';
+const URL = 'https://fantasy.espn.com/football/league/schedule?leagueId=59910&teamId=';
 
 (async () => {
   try {
